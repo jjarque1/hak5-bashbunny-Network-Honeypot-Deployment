@@ -1,0 +1,56 @@
+#!/bin/bash
+# Title: Network Honeypot Deployment
+# Description: Set up a basic honeypot using Cowrie to attract and log SSH attack attempts.
+# Author: jjarque1
+# Target: Linux
+# Payload developed for educational purposes only
+
+# Set HID and storage attack modes
+ATTACKMODE HID STORAGE
+
+# Delay to allow the system to recognize the USB device
+QUACK DELAY 2000
+
+# Open terminal (assumes shortcut Ctrl+Alt+T opens a terminal)
+QUACK CTRL ALT t
+QUACK DELAY 1000
+
+# Install dependencies for Cowrie (assumes system has internet access)
+QUACK STRING sudo apt-get install -y python3 python3-virtualenv libssl-dev libffi-dev build-essential git
+QUACK ENTER
+QUACK DELAY 10000  # Adjust delay based on internet speed and installation time
+
+# Clone Cowrie honeypot repository
+QUACK STRING git clone https://github.com/cowrie/cowrie /opt/cowrie
+QUACK ENTER
+QUACK DELAY 5000
+
+# Set up the Cowrie virtual environment
+QUACK STRING cd /opt/cowrie
+QUACK ENTER
+QUACK STRING virtualenv cowrie-env
+QUACK ENTER
+QUACK DELAY 1000
+
+# Activate the virtual environment and install dependencies
+QUACK STRING source cowrie-env/bin/activate
+QUACK ENTER
+QUACK STRING pip install -r requirements.txt
+QUACK ENTER
+QUACK DELAY 5000
+
+# Start Cowrie honeypot
+QUACK STRING bin/cowrie start
+QUACK ENTER
+QUACK DELAY 2000
+
+# Copy Cowrie logs to Bash Bunny storage
+QUACK STRING cp /opt/cowrie/var/log/cowrie/cowrie.log /media/$USER/BashBunny/cowrie_log.txt
+QUACK ENTER
+QUACK DELAY 2000
+
+# Close the terminal
+QUACK CTRL d
+
+# Eject the USB Bash Bunny
+ATTACKMODE OFF
